@@ -5,7 +5,7 @@
     "dark": "/logo-hd-dark.png",
     "light": "/logo-hd-light.png"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/logo-hd-white.png",
   "colors": {
     "primary": "#0D9373",
     "light": "#07C983",
@@ -45,6 +45,7 @@
         "quickstart",
         "development"
       ]
+    }
   ],
   "footerSocials": {
     "linkedin": "https://www.linkedin.com/company/autonoma-ai/"
