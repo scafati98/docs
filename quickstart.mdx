@@ -13,13 +13,19 @@ To run this, send something like `"do XYZ"`
 
 Behind the scenes, it will execute one of these; there's no need to be too explicit.
 
-| Action                 | **Description of action**                              |
-| ---------------------- | ------------------------------------------------------ |
-| **click**              | click on a button or hyperlink                         |
-| **input text**         | insert text over a designated text box                 |
-| **scroll** **x times** | scroll down or up on a page a given amount of times    |
-| **wait x seconds**     | wait a given amount of time in between events          |
-| **ocr-click**          | click on a word in screen (use if click doesn't works) |
+| Action                         | **Description of action**                              |
+| ------------------------------ | ------------------------------------------------------ |
+| **click**                      | click on a button or hyperlink                         |
+| **input text**                 | insert text over a designated text box                 |
+| **scroll** **x times**         | scroll down or up on a page a given amount of times    |
+| **swipe \<direction> x times** | swipe left, right, top, down x amount of times         |
+| **input on focus**             | write text at a given position                         |
+| **wait x seconds**             | wait a given amount of time in between events          |
+| **ocr-click**                  | click on a word in screen (use if click doesn't works) |
+| **press enter to send**        | press enter to send a text input                       |
+| **open url \<url>**            | open a new url                                         |
+| **exit last tab**              | close the opened tab and go back to the last one       |
+| **set QR \<qr-link>**          | to set a QR code on the camera                         |
 
 ## Assertions
 
