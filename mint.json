@@ -2,10 +2,10 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Autonoma",
   "logo": {
-    "dark": "/logo-hd-dark.png",
-    "light": "/logo-hd-light.png"
+    "dark": "logo-hd-dark.png",
+    "light": "logo-hd-light.png"
   },
-  "favicon": "/logo-hd-white.png",
+  "favicon": "logo-hd-white.png",
   "colors": {
     "primary": "#0D9373",
     "light": "#07C983",
@@ -26,11 +26,6 @@
     "url": "https://autonoma.app"
   },
   "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://autonoma-9e2c48c0.mintlify.app/introduction"
-    },
     {
       "name": "Feature Requests",
       "icon": "newspaper",
