@@ -2,10 +2,10 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Autonoma",
   "logo": {
-    "dark": "logo-hd-dark.png",
-    "light": "logo-hd-light.png"
+    "dark": "logo-hd-dark.svg",
+    "light": "logo-hd-light.svg"
   },
-  "favicon": "logo-hd-white.png",
+  "favicon": "logo-hd-white.svg",
   "colors": {
     "primary": "#0D9373",
     "light": "#07C983",
