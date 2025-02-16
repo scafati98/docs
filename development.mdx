@@ -1,97 +1,171 @@
 ---
-title: 'Development'
-description: 'Learn how to preview changes locally'
+title: "CI/CD Integration Guide"
+description: "Learn how to run your tests on your current CI/CD"
 ---
 
 <Info>
   **Prerequisite**: Please install Node.js (version 19 or higher) before proceeding.
 </Info>
 
-Step 1. Install Mintlify on your OS:
+### Step 1. Generate your API Key
+
+Go to the API Keys section and generate a key. You will see something like this once done.![](/Screenshot2025-02-16at7.21.46PM.png)
+
+### Step 2. Build the cURL command
 
 <CodeGroup>
+  ```bash Run a folder
+  curl -X POST
+  	--silent
+  	--retry 3 
+  	--retry-connrefused 
+  	--location 'https://api.prod.autonoma.app/v1/run/folder/<folder-id>' 
+  	--header 'autonoma-client-id: <client-id>' 
+  	--header 'autonoma-client-secret: <client-secret>' 
+  	--header 'Content-Type: application/json' || true
+  ```
 
-```bash npm
-npm i -g mintlify
-```
-
-```bash yarn
-yarn global add mintlify
-```
-
+  ```bash Run a single test
+  curl -X POST
+  	--silent
+  	--retry 3 
+  	--retry-connrefused 
+  	--location 'https://api.prod.autonoma.app/v1/run/test/<test-id>' 
+  	--header 'autonoma-client-id: <client-id>' 
+  	--header 'autonoma-client-secret: <client-secret>' 
+  	--header 'Content-Type: application/json' || true
+  ```
 </CodeGroup>
 
-Step 2. Go to the docs are located (where you can find `mint.json`) and run the following command:
+* `<folder-id>` or `<test-id>`with the actual folder/test ID.
 
-```bash
-mintlify dev
-```
+* `<client-id>` and `<client-secret>` with appropriate credentials found in the `API Keys` section.
 
-The documentation website is now available at `http://localhost:3000`.
+You can also find the command by going to a folder, clicking on the three dots and selecting the cURL command option.![](/Screenshot2025-02-16at7.28.43PM.png)
 
-### Custom Ports
+For a single test its similar, go to a test, click over the three dots and select the cURL command option.![](/Screenshot2025-02-16at7.29.11PM.png)
 
-Mintlify uses port 3000 by default. You can use the `--port` flag to customize the port Mintlify runs on. For example, use this command to run in port 3333:
+Both approaches will display a modal with the cURL command.
 
-```bash
-mintlify dev --port 3333
-```
+### Step 3. Add it to your deployment pipeline
 
-You will see an error like this if you try to run Mintlify in a port that's already taken:
-
-```md
-Error: listen EADDRINUSE: address already in use :::3000
-```
-
-## Mintlify Versions
-
-Each CLI is linked to a specific version of Mintlify. Please update the CLI if your local website looks different than production.
-
-<CodeGroup>
-
-```bash npm
-npm i -g mintlify@latest
-```
-
-```bash yarn
-yarn global upgrade mintlify
-```
-
-</CodeGroup>
-
-## Deployment
-
-<Tip>
-  Unlimited editors available under the [Pro
-  Plan](https://mintlify.com/pricing) and above.
-</Tip>
-
-You should see the following if the deploy successfully went through:
-
-<Frame>
-  <img src="/images/checks-passed.png" style={{ borderRadius: '0.5rem' }} />
-</Frame>
-
-## Troubleshooting
-
-Here's how to solve some common problems when working with the CLI.
+You can now add this cURL into any deployment pipeline: **Github**, **Gitlab**, **Jenkins** and **Bitbucket**.
 
 <AccordionGroup>
-  <Accordion title="Mintlify is not loading">
-    Update to Node v18. Run `mintlify install` and try again.
-  </Accordion>
-  <Accordion title="No such file or directory on Windows">
-Go to the `C:/Users/Username/.mintlify/` directory and remove the `mint`
-folder. Then Open the Git Bash in this location and run `git clone
-https://github.com/mintlify/mint.git`.
+  <Accordion title="Github Actions" icon="github">
+    Add the following step in your **GitHub Actions workflow** (`.github/workflows/deploy.yml`):
 
-Repeat step 3.
+    ```yaml deploy.yml
+    jobs:
+      deploy:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Send cURL POST request
+            run: |
+              curl -X POST \
+                  --silent \
+                  --retry 3 \
+                  --retry-connrefused \
+                  --location "https://api.prod.autonoma.app/v1/run/folder/${{ secrets.FOLDER_ID }}" \
+                  --header "autonoma-client-id: ${{ secrets.CLIENT_ID }}" \
+                  --header "autonoma-client-secret: ${{ secrets.CLIENT_SECRET }}" \
+                  --header "Content-Type: application/json" || true
 
+    ```
+
+    👉 Store `FOLDER_ID`, `CLIENT_ID`, and `CLIENT_SECRET` as GitHub Secrets under Settings → Secrets and variables → Actions.
   </Accordion>
-  <Accordion title="Getting an unknown error">
-    Try navigating to the root of your device and delete the ~/.mintlify folder.
-    Then run `mintlify dev` again.
+
+  <Accordion title="Gitlab CI/CD" icon="gitlab">
+    Modify your **`.gitlab-ci.yml`** file:
+
+    ```yaml .gitlab-ci.yml
+    stages:
+      - deploy
+
+    deploy_job:
+      stage: deploy
+      script:
+        - curl -X POST \
+            --silent \
+            --retry 3 \
+            --retry-connrefused \
+            --location "https://api.prod.autonoma.app/v1/run/folder/$FOLDER_ID" \
+            --header "autonoma-client-id: $CLIENT_ID" \
+            --header "autonoma-client-secret: $CLIENT_SECRET" \
+            --header "Content-Type: application/json" || true
+      only:
+        - main
+
+    ```
+
+    👉 Set `FOLDER_ID`, `CLIENT_ID`, and `CLIENT_SECRET` as environment variables in GitLab → Settings → CI/CD → Variables.
+  </Accordion>
+
+  <Accordion title="Jenkins Pipeline" icon="jenkins">
+    For a **Jenkinsfile**, use:
+
+    ```groovy Jenkinsfile
+    pipeline {
+        agent any
+        environment {
+            FOLDER_ID = credentials('FOLDER_ID')
+            CLIENT_ID = credentials('CLIENT_ID')
+            CLIENT_SECRET = credentials('CLIENT_SECRET')
+        }
+        stages {
+            stage('Deploy') {
+                steps {
+                    script {
+                        sh '''
+                        curl -X POST \
+                            --silent \
+                            --retry 3 \
+                            --retry-connrefused \
+                            --location "https://api.prod.autonoma.app/v1/run/folder/$FOLDER_ID" \
+                            --header "autonoma-client-id: $CLIENT_ID" \
+                            --header "autonoma-client-secret: $CLIENT_SECRET" \
+                            --header "Content-Type: application/json" || true
+                        '''
+                    }
+                }
+            }
+        }
+    }
+
+    ```
+
+    👉 Store `FOLDER_ID`, `CLIENT_ID`, and `CLIENT_SECRET` in Jenkins Credentials under Manage Jenkins → Manage Credentials.
+  </Accordion>
+
+  <Accordion title="Bitbucket Pipelines" defaultOpen={false} icon="bitbucket">
+    Edit your **`bitbucket-pipelines.yml`**:
+
+    ```yaml bitbucket-pipelines.yml
+    pipelines:
+      default:
+        - step:
+            name: Deploy
+            script:
+              - curl -X POST \
+                  --silent \
+                  --retry 3 \
+                  --retry-connrefused \
+                  --location "https://api.prod.autonoma.app/v1/run/folder/$FOLDER_ID" \
+                  --header "autonoma-client-id: $CLIENT_ID" \
+                  --header "autonoma-client-secret: $CLIENT_SECRET" \
+                  --header "Content-Type: application/json" || true
+
+    ```
+
+    👉 Set `FOLDER_ID`, `CLIENT_ID`, and `CLIENT_SECRET` in Bitbucket Repository Variables under Repository settings → Pipelines → Repository variables.
   </Accordion>
 </AccordionGroup>
 
-Curious about what changed in a CLI version? [Check out the CLI changelog.](/changelog/command-line)
+### **Best Practices**
+
+✅ **Use environment variables/secrets** to avoid exposing credentials.
+✅ **Enable retry logic** (`--retry 3 --retry-connrefused`) for robustness.
+✅ **Use `|| true`** to prevent failures from stopping the pipeline.
+
+This ensures your CI/CD pipeline can **trigger the API** reliably. 🚀
