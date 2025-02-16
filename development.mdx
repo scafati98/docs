@@ -160,8 +160,10 @@ You can now add this cURL into any deployment pipeline: **Github**, **Gitlab**, 
 
 ### **Best Practices**
 
-✅ **Use environment variables/secrets** to avoid exposing credentials.
-✅ **Enable retry logic** (`--retry 3 --retry-connrefused`) for robustness.
-✅ **Use `|| true`** to prevent failures from stopping the pipeline.
+* ✅ **Use environment variables/secrets** to avoid exposing credentials.
+
+* ✅ **Enable retry logic** (`--retry 3 --retry-connrefused`) for robustness.
+
+* ✅ **Use `|| true`** to prevent failures from stopping the pipeline.
 
 This ensures your CI/CD pipeline can **trigger the API** reliably. 🚀
