@@ -9,31 +9,48 @@ You can interact with Autonoma Creation Engine by either providing steps in natu
 
 ## Basic navigation actions
 
-To use it with natural language, just send something like `"do XYZ"`
+You can simply navigate over your web or mobile apps and the steps will be recorded and labeled as clicks and input text, among others.
+
+![Click And Record Gi](/images/clickAndRecord.gif)
+
+For more specific actions, you can execute them using natural language by just sending something like `"do XYZ".`
 
 Behind the scenes, it will execute one of these; there's no need to be too explicit.
 
-| **Action**                  | **Description of action**                              |
-| --------------------------- | ------------------------------------------------------ |
-| `click`                     | click on a button or hyperlink                         |
-| `ocr-click`                 | click on a word in screen (use if click doesn't works) |
-| `input text`                | insert text over a designated text box                 |
-| `swipe <direction> x times` | swipe left, right, top, down x amount of times         |
-| `input on focus`            | write text at a given position                         |
-| `wait x seconds`            | wait a given amount of time in between events          |
-| `press enter to send`       | press enter to send a text input                       |
-| `open url <url>`            | open a new url                                         |
-| `exit last tab`             | close the opened tab and go back to the last one       |
-| `set QR <qr-link>`          | to set a QR code on the camera                         |
-| `hover`                     | hover on a specific element                            |
+| **Action**                  | **Description of action**                                                                                                                     |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `click`                     | click on a button or hyperlink                                                                                                                |
+| `ocr-click`                 | click on a word in screen (use if click doesn't works)                                                                                        |
+| `ocr-scroll`                | to scroll down within a specific component (not the entire screen), find the element you want and scroll to its position within the component |
+| `input text`                | insert text over a designated text box                                                                                                        |
+| `swipe <direction> x times` | swipe left, right, top, down x amount of times                                                                                                |
+| `input on focus`            | write text at a given position                                                                                                                |
+| `wait x seconds`            | wait a given amount of time in between events                                                                                                 |
+| `press enter to send`       | press enter to send a text input                                                                                                              |
+| `open url <url>`            | open a new url                                                                                                                                |
+| `exit last tab`             | close the opened tab and go back to the last one                                                                                              |
+| `set QR <qr-link>`          | to set a QR code on the camera                                                                                                                |
+| `hover`                     | hover on a specific element                                                                                                                   |
 
 ## Assertions
+
+The Assert action is a key validation tool in UI testing that allows you to compare expected values with actual values in the UI. It helps confirm that the application behaves as expected by verifying the presence of specific text, elements, or conditions during the test run.
+
+**When to use Assert**\
+The Assert action is essential for ensuring the accuracy and correctness of your application. It is useful when you need to validate user interactions, confirm that certain elements appear or disappear, or ensure that data is correctly processed and displayed. By using assertions, you can catch unexpected behavior or errors in the UI and ensure the application meets functional requirements.
+
+To use the Assert action:
+
+1. Identify the expected value or condition (e.g., text, element visibility, or state).
+2. Use the `Assert` action to compare the actual result in the UI with the expected value, triggering a pass or fail response in your test.
+
+This makes the Assert action a crucial part of your test suite, providing automated validation and ensuring your application works as intended.
 
 To run this, send something like `"validate XYZ"`
 
 Behind the scenes, it will take a screenshot execute one of these; there's no need to be too explicit.
 
-| Action                  | **Description of action**                       |
+| **Action**              | **Description of action**                       |
 | ----------------------- | ----------------------------------------------- |
 | **exists**              | validate a certain item exists                  |
 | **exists many**         | validate the presence of more than one item     |
@@ -42,25 +59,91 @@ Behind the scenes, it will take a screenshot execute one of these; there's no ne
 | **url location assert** | validate a given URL                            |
 | **math assert**         | to make a mathematical assertion                |
 
+![Asserts(2) Gi](/images/asserts\(2\).gif)
+
+## Complex actions
+
+In UI testing, **complex actions** offer greater flexibility by allowing you to insert dynamic, context-specific data into your tests. These variables go beyond simple text or numbers, enabling you to simulate a wide range of real-world scenarios.
+
+In the table below, you'll find an overview of all available complex variables, including how to use them and the scenarios in which they are most beneficial.
+
+| Action              | Description of action                                                |
+| :------------------ | :------------------------------------------------------------------- |
+| **Variable**        | Inserts the value of a predefined variable                           |
+| **Random**          | Inserts a random value based on a given description of what you want |
+| **Date**            | Inserts current date with a given format                             |
+| **File for upload** | Upload a file to the test                                            |
+| **Clipboard**       | Copy to clipboard some value for later use                           |
+
 ### Variables interpolation
 
-Click on Insert and select from the options in the menu. 
+Click on Insert and select from the options in the menu.
 
-Variables are values you can XYZ.. `#to-do`
+**Variables** are reusable placeholders for values used in natural language test instructions. These values can be things like URLs, input data, or expected text, and they allow you to easily manage and reuse data across multiple test steps.
+
+**When to use Variables**
+
+1. **Reusability**: When a value (e.g., a URL or input data) is used in multiple instructions, store it in a variable to avoid redundancy.
+2. **Consistency**: If a value is likely to change, use a variable to update it in one place instead of across multiple steps.
+3. **Login Credentials**: Storing login credentials in variables allows you to reuse them in various test steps without hardcoding.
 
 <Steps>
-  <Step title="Create a variable">
+  <Step title="Create a variable" stepNumber="1">
     ![Create New Variable Gi](/images/createNewVariable.gif)
   </Step>
-  <Step title="Use it on a test">
+  <Step title="Use it on a test" stepNumber="2">
     ![Import Variable Gi](/images/importVariable.gif)
   </Step>
 </Steps>
 
-| Action              | Description of action                                                |
-| ------------------- | -------------------------------------------------------------------- |
-| **Variable**        | Inserts the value of a predefined variable                           |
-| **Random**          | Inserts a random value based on a given description of what you want |
-| **Date**            | Inserts current date                                                 |
-| **Clipboard**       | Copy to clipboard some value                                         |
-| **File for upload** | Upload a file to the test                                            |
+**Summary**
+
+Use variables to simplify your tests, reduce repetition, and manage frequently changing values (like login credentials) efficiently. For random data or timestamps, you can use our dedicated functions for generating dynamic values.
+
+### Random
+
+Random variables are placeholders that generate unpredictable values each time a test runs. These can be numbers, strings, or other types of data that are inserted dynamically into your UI tests.
+
+**When to use Random**\
+Random variables are ideal for testing scenarios where variability is needed, such as validating form inputs, simulating user behavior, or testing edge cases. By using random values, you ensure your tests cover a wider range of possibilities, helping identify issues that may not be immediately obvious in static tests.
+
+### ![Random Generate Gi](/images/randomGenerate.gif)
+
+### Date
+
+Date variables automatically insert the current date into your UI tests. You can specify the exact format for the date by using placeholders like `{{date}}` followed by your desired format (e.g., `{{date}} with format YYYY-MM-DD`).
+
+**When to use Date**\
+Date variables are useful when you need to test scenarios that depend on the current date, such as validating date fields, checking date-based logic, or simulating time-sensitive user actions. By dynamically inserting the current date in the chosen format, you ensure your tests stay relevant and accurate over time.
+
+### ![Insert Date Gi](/images/insertDate.gif)
+
+### File for Upload
+
+File upload variables allow you to automatically specify and upload files during your UI tests. By defining which file to upload and simulating the interaction with the upload component, you can fully automate file upload scenarios.
+
+**When to use File for Upload**\
+File upload variables are useful when you need to test how your application handles file inputs, such as uploading images, documents, or other types of files. By automating the process of selecting and uploading files, you ensure that your tests cover a variety of file-related scenarios, including handling different file types, sizes, and user interactions.
+
+**To use this feature:**
+
+1. Select the file you want to upload.
+2. Simulate the click or interaction with the file upload component on the UI.
+
+### ![Upload File Gi](/images/uploadFile.gif)
+
+### Clipboard
+
+The clipboard variable allows you to reuse text that was previously copied during a test. By simulating a "copy" action and storing the copied value, you can then use the `{{clipboard}}` variable to automatically insert that value into other parts of your test.
+
+**When to use Clipboard**\
+The clipboard variable is particularly useful when you need to test scenarios where copied text is used in multiple parts of the UI, such as filling out forms, pasting content, or validating text-based actions. By automating the copy-paste process, you ensure that your tests accurately reflect real-world user behaviors involving clipboard interactions.
+
+**To use this feature:**
+
+1. Click the button or action to copy the text.
+2. Use the `{{clipboard}}` variable to insert the copied value into subsequent steps of your test.
+
+This makes it easier to test clipboard-based functionality without needing to manually enter or duplicate text.
+
+![Clipboard Final Gi](/images/clipboard-final.gif)
