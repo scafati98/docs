@@ -37,9 +37,10 @@
       "group": "Get Started",
       "pages": [
         "introduction",
+        "applications",
         "new_tests",
-        "running_tests",
         "writing_tests",
+        "running_tests",
         "cicd_integration"
       ]
     }
