@@ -37,8 +37,8 @@
       "group": "Get Started",
       "pages": [
         "introduction",
-        "quickstart",
-        "development"
+        "writing_tests",
+        "cicd_integration"
       ]
     }
   ],
