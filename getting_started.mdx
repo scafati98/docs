@@ -9,13 +9,13 @@ A UI test checks that your application behaves as expected when users interact w
 
 ## 2. What’s an Assert and Why It Matters
 
-An **assert** is a checkpoint in your test. It confirms that something is correct—like verifying a confirmation message appears after clicking "Submit."
+An **assert** is a checkpoint in your test. It confirms that something is correct—like verifying a confirmation message appears after clicking "Submit".
 
 Think of it as asking:  _"Did this work as expected?"_
 
-> **Example:**
+> **Example, after logging in:**
 >
-> After logging in, assert that you see **"Welcome, Joseph\!"**
+> Assert that you see **"Welcome, Joseph\!"**
 
 ## 3. Best Practices for UI Testing
 
@@ -28,13 +28,13 @@ Think of it as asking:  _"Did this work as expected?"_
 ## 4. Your First Test in 3 Steps
 
 1. **Define the goal**: _"Test that users can send a contact form."_
-2. **Record or describe the steps**: Click "Contact", fill out fields, click "Send."
+2. **Record or describe the steps**: Click "Contact", fill out fields <u>step by step</u>, click "Send".
 3. **Add asserts**: Confirm "Message sent\!" appears.
 
-## Example: Creating a Test for a Virtual Card in a Banking App
+## Example: Creating a Test for an Ecommerce
 
-- **Goal**: Validate that users can generate new virtual cards.
-- **Steps**: Click on create a new card, fill out the fields and create it.
-- **Asserts**: Validate that there is a new "Active Card" created.
+- **Goal**: Validate that users can add items into their carts.
+- **Steps**: Click on "Shop Now", click "Add to Cart" for an item and navigate to your cart.
+- **Asserts**: Validate that there is an item in the cart.
 
-![Demo Bank Gi](/images/Demo-Bank.gif)
+![Demo Ecommerce Gi](/images/Demo-Ecommerce.gif)
