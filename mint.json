@@ -36,6 +36,7 @@
     {
       "group": "Get Started",
       "pages": [
+        "getting_started",
         "introduction",
         "applications",
         "new_test",
