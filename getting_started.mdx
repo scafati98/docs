@@ -1,0 +1,34 @@
+---
+title: "Getting Started with UI Test Automation"
+description: "Welcome! This guide is designed to help anyone—regardless of technical background—create effective UI tests using our platform."
+---
+
+## 1. What is a UI Test?
+
+A UI test checks that your application behaves as expected when users interact with it (e.g., clicking buttons, filling forms).
+
+##  2. What’s an Assert and Why It Matters
+
+An **assert** is a checkpoint in your test. It confirms that something is correct—like verifying a confirmation message appears after clicking "Submit."
+
+Think of it as asking:  _"Did this work as expected?"_
+
+> **Example:**  
+>
+> After logging in, assert that you see **"Welcome, Joseph\!"**
+
+## 3. Best Practices for UI Testing
+
+- ✅ **Start with key user flows** (e.g., login, checkout).
+- ✅ **Place asserts after important actions** (e.g., after submitting a form).
+- ✅ **Check visible outcomes**, like messages, buttons, or page changes.
+- ✅ **Build one test per key user flow** to ease up debugging
+- ⚠️ **Avoid overloading with unnecessary asserts** — focus on what really matters for the user experience.
+
+## 4. Your First Test in 3 Steps
+
+1. **Define the goal**: _"Test that users can send a contact form."_
+
+2. **Record or describe the steps**: Click "Contact", fill out fields, click "Send."
+
+3. **Add asserts**: Confirm "Message sent\!" appears.
