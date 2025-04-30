@@ -39,6 +39,7 @@
         "introduction",
         "getting_started",
         "applications",
+        "build-for-ios-apps",
         "new_test",
         "writing_tests",
         "running_tests",

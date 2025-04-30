@@ -1,0 +1,28 @@
+---
+title: "Building iOS applications for Autonoma"
+description: "Guide on how to build your iOS applications to become compatible with Autonoma."
+---
+
+### Method A: Using XCode
+
+1. Open your project in XCode
+2. Go to **Product** -\\\> **Destination**, and choose “_Any iOS Simulator Device (arm64, x86_64)_”
+3. Build (**⌘B**) the project.
+4. Go to **Product** -\\\> **Show Build Folder in Finder.**
+5. You will find the .app file inside the folder “_Products/Debug-iphonesimulator_”
+
+### ![Xcode Gi](/images/xcode.gif)
+
+Method B: Using the terminal
+
+1. Open the terminal
+2. Navigate to the folder where your “._xcodeproj_” file is located
+3. Run the following command:
+
+`xcodebuild -scheme <YourScheme> -sdk iphonesimulator -destination "generic/platform=iOS Simulator" -configuration Debug BUILD_LIBRARY_FOR_DISTRIBUTION=YES ARCHS="x86_64 arm64" ONLY_ACTIVE_ARCH=NO`
+
+After the build is finished, you will find the “.\*\*app\*\*” file inside the following folder:
+
+> **~/Library/Developer/Xcode/DerivedData/\\\<app-name\\\>-\\\<id\\\>/Build/Products/Debug-iphonesimulator/**
+
+![Terminal Gi](/images/terminal.gif)
