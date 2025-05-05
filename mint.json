@@ -43,7 +43,8 @@
         "new_test",
         "writing_tests",
         "running_tests",
-        "cicd_integration"
+        "cicd_integration",
+        "slack-integration"
       ]
     }
   ],
