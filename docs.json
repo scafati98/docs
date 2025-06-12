@@ -1,0 +1,80 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "theme": "mint",
+  "name": "Autonoma",
+  "logo": {
+    "dark": "/logo-hd-white.svg",
+    "light": "/logo-hd-dark.svg"
+  },
+  "favicon": "/logo-hd-dark.svg",
+  "colors": {
+    "primary": "#0D9373",
+    "light": "#07C983",
+    "dark": "#0D9373"
+  },
+  "topbarLinks": [
+    {
+      "name": "Support",
+      "url": "mailto:info@autonoma.app"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Dashboard",
+    "url": "https://autonoma.app"
+  },
+  "anchors": [
+    {
+      "name": "Feature Requests",
+      "icon": "newspaper",
+      "url": "https://autonoma.bettermode.io/"
+    }
+  ],
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Get Started",
+        "groups": [
+          {
+            "group": "Introduction",
+            "pages": [
+              "introduction",
+              "getting_started"
+            ]
+          },
+          {
+            "group": "Creating Tests",
+            "pages": [
+              "applications",
+              "build-for-ios-apps",
+              "new_test",
+              "writing_tests"
+            ]
+          },
+          {
+            "group": "Running Tests",
+            "pages": [
+              "running_tests",
+              "cicd_integration",
+              "slack-integration"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Endpoints",
+            "openapi": {
+              "source": "openapi.yaml",
+              "directory": "api-reference"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "footerSocials": {
+    "linkedin": "https://www.linkedin.com/company/autonoma-ai/"
+  }
+}
