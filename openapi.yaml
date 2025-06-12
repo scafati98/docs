@@ -1,0 +1,633 @@
+openapi: 3.0.3
+info:
+  title: Autonoma API
+  description: |
+    API for managing test runs and test definitions in the Autonoma platform.
+
+    **Important Note:** Media URLs (images, videos) expire after 1 hour.
+  version: 1.0.0
+  contact:
+    name: Autonoma Support
+servers:
+  - url: https://autonoma.app/api
+    description: Production server
+security:
+  - ApiKeyAuth: []
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: autonoma-client-id
+      description: Client ID for authentication
+    ApiSecretAuth:
+      type: apiKey
+      in: header
+      name: autonoma-client-secret
+      description: Client secret for authentication
+  schemas:
+    TestFolder:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "cm7t223mk00154mzy2jwk2pqy"
+        name:
+          type: string
+          example: "private-listing-hub"
+    ApplicationVersion:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "STG"
+        path:
+          type: string
+          example: "https://autonoma.app"
+    Metadata:
+      type: object
+      properties:
+        source:
+          type: string
+          example: "scheduled"
+        version:
+          type: string
+          example: "STG"
+        architecture:
+          type: string
+          example: "web"
+        application_version_id:
+          type: string
+          example: "cm7dbowr80042waka7thyjhkq"
+        email:
+          type: string
+          example: "axel@autonoma.app"
+        username:
+          type: string
+          example: "Axel Escalada"
+    Element:
+      type: object
+      properties:
+        html:
+          type: string
+          example: '<input class="input c2053dbb5 c10f8401f" inputmode="email" name="username" id="username" type="text" value="" required="" autocomplete="email" autocapitalize="none" spellcheck="false" autofocus=""'
+        selector:
+          type: string
+          example: "input#username"
+    Step:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "cmbs5deso0001ps016az80n89"
+        instruction:
+          type: string
+          example: "insert {{variable:QA_ADMIN_USER}} into log in input"
+        interaction:
+          type: string
+          example: "input-text"
+        output:
+          type: string
+          example: "input-text on element with text axel@autonoma.app"
+        status:
+          type: string
+          enum: [passed, failed, pending]
+          example: "passed"
+        url:
+          type: string
+          example: "https://login.autonoma.app/login"
+        element:
+          $ref: "#/components/schemas/Element"
+        image:
+          type: string
+          description: "Screenshot URL (expires in 1 hour)"
+          example: "https://storage.googleapis.com/autonoma-media/screenshots/d8e41de595af.jpeg"
+    RunTest:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Folder with id cm9r0nog10012v301qtollv01 was scheduled to run. Since no applicationVersionID was provided, the latest version ('STG') for the application associated with the folder's tests was used."
+        url:
+          type: string
+          example: "https://autonoma.app/run/pby4qnbppbvimimuls4v5ajq"
+        runID:
+          type: string
+          example: pby4qnbppbvimimuls4v5ajq
+    RunFolder:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Test created successfully"
+        url:
+          type: string
+          example: "https://autonoma.app/run/pby4qnbppbvimimuls4v5ajq"
+        folderRunID:
+          type: string
+          example: pby4qnbppbvimimuls4v5ajq
+    TestRun:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "gch7uesq5h6m9xe2fdq5ddgd"
+        name:
+          type: string
+          example: "Add 'member' to network, verify it can access the listings and remove it from the network"
+        test_id:
+          type: string
+          example: "cm8d9gt6v000c9fe5glmyi33u"
+        status:
+          type: string
+          enum: [pending, running, passed, failed]
+          example: "pending"
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-06-12T00:00:11.286Z"
+        ended_at:
+          type: string
+          format: date-time
+          example: "2025-06-12T00:00:11.286Z"
+        folder_run_id:
+          type: string
+          nullable: true
+          example: "y98cwdq4c3p3v3i68n7nay1p"
+        job_run_id:
+          type: string
+          nullable: true
+          example: null
+        job_id:
+          type: string
+          nullable: true
+          example: null
+        folder:
+          $ref: "#/components/schemas/TestFolder"
+          nullable: true
+        video_url:
+          type: string
+          nullable: true
+          description: "Video URL (expires in 1 hour)"
+          example: null
+        steps:
+          type: array
+          items:
+            $ref: "#/components/schemas/Step"
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+    Test:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "cmbsgljfr00fd060153r9x8ek"
+        name:
+          type: string
+          example: "New Test 2025-06-11T21:25:47.442Z"
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-06-11T21:25:47.559Z"
+        folder:
+          $ref: "#/components/schemas/TestFolder"
+          nullable: true
+        application_version:
+          $ref: "#/components/schemas/ApplicationVersion"
+        steps:
+          type: array
+          items:
+            $ref: "#/components/schemas/Step"
+    Folder:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "cmbsgljfr00fd060153r9x8ek"
+        name:
+          type: string
+          example: "Draft Folder"
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-06-11T21:25:47.559Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2025-06-11T21:25:47.559Z"
+        crontab:
+          type: string
+          example: "0 0 * * *"
+        tests:
+          type: array
+          items:
+            $ref: "#/components/schemas/FolderTest"
+    FolderTest:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "cmbsgljfr00fd060153r9x8ek"
+        name:
+          type: string
+          example: "New Test 2025-06-11T21:25:47.442Z"
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Not found"
+        message:
+          type: string
+          example: "The requested resource was not found"
+paths:
+  /run/test/{testId}:
+    post:
+      summary: Run a test by test id
+      description: Run a test by test id
+      security:
+        - ApiKeyAuth: []
+          ApiSecretAuth: []
+      responses:
+        "200":
+          description: Run creation result
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RunTest"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /run/folder/{folderId}:
+    post:
+      summary: Run tests by folder id
+      description: Run tests by folder id
+      security:
+        - ApiKeyAuth: []
+          ApiSecretAuth: []
+      responses:
+        "200":
+          description: Run creation result
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RunFolder"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /run:
+    get:
+      summary: List test runs
+      description: Retrieve a list of test runs with optional filtering and pagination
+      security:
+        - ApiKeyAuth: []
+          ApiSecretAuth: []
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of runs to return
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            example: 20
+        - name: offset
+          in: query
+          description: Number of runs to skip for pagination
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            example: 0
+        - name: test
+          in: query
+          description: Filter by test ID
+          required: false
+          schema:
+            type: string
+            example: "cm8d9gt6v000c9fe5glmyi33u"
+        - name: folder
+          in: query
+          description: Filter by folder ID
+          required: false
+          schema:
+            type: string
+            example: "cm7t223mk00154mzy2jwk2pqy"
+        - name: status
+          in: query
+          description: Filter by run status
+          required: false
+          schema:
+            type: string
+            enum: [pending, running, passed, failed]
+            example: "passed"
+        - name: media
+          in: query
+          description: Include media URLs in response (expires in 1 hour)
+          required: false
+          schema:
+            type: boolean
+            example: true
+        - name: steps
+          in: query
+          description: Include step details in response
+          required: false
+          schema:
+            type: boolean
+            example: true
+      responses:
+        "200":
+          description: List of test runs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TestRun"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /run/{runId}:
+    get:
+      summary: Get a specific test run
+      description: Retrieve details of a specific test run by ID
+      security:
+        - ApiKeyAuth: []
+          ApiSecretAuth: []
+      parameters:
+        - name: runId
+          in: path
+          required: true
+          description: The ID of the test run
+          schema:
+            type: string
+            example: "g41k688vndxzt7kh4kq5m12s"
+        - name: media
+          in: query
+          description: Include media URLs in response (expires in 1 hour)
+          required: false
+          schema:
+            type: boolean
+            example: true
+        - name: steps
+          in: query
+          description: Include step details in response
+          required: false
+          schema:
+            type: boolean
+            example: true
+      responses:
+        "200":
+          description: Test run details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestRun"
+        "404":
+          description: Test run not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /run/{runId}/steps:
+    get:
+      summary: Get steps for a test run
+      description: Retrieve the steps of a specific test run
+      security:
+        - ApiKeyAuth: []
+          ApiSecretAuth: []
+      parameters:
+        - name: runId
+          in: path
+          required: true
+          description: The ID of the test run
+          schema:
+            type: string
+            example: "g41k688vndxzt7kh4kq5m12s"
+        - name: limit
+          in: query
+          description: Maximum number of steps to return
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            example: 20
+        - name: offset
+          in: query
+          description: Number of steps to skip for pagination
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            example: 0
+      responses:
+        "200":
+          description: List of test run steps
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Step"
+        "404":
+          description: Test run not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /test:
+    get:
+      summary: List tests
+      description: Retrieve a list of test definitions with optional pagination
+      security:
+        - ApiKeyAuth: []
+          ApiSecretAuth: []
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of tests to return
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            example: 20
+        - name: offset
+          in: query
+          description: Number of tests to skip for pagination
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            example: 0
+        - name: steps
+          in: query
+          description: Include step details in response
+          required: false
+          schema:
+            type: boolean
+            example: true
+        - name: folder
+          in: query
+          description: Retrieve tests by folder id
+          required: false
+          schema:
+            type: string
+            example: true
+      responses:
+        "200":
+          description: List of tests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Test"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /test/{testId}:
+    get:
+      summary: Get a specific test
+      description: Retrieve details of a specific test definition by ID
+      security:
+        - ApiKeyAuth: []
+          ApiSecretAuth: []
+      parameters:
+        - name: testId
+          in: path
+          required: true
+          description: The ID of the test
+          schema:
+            type: string
+            example: "cmbjp2vva000u0j01vtfu5kdj"
+        - name: steps
+          in: query
+          description: Include step details in response
+          required: false
+          schema:
+            type: boolean
+            example: true
+      responses:
+        "200":
+          description: Test details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Test"
+        "404":
+          description: Test not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /folder:
+    get:
+      summary: List Folders
+      description: Retrieve a list of folder definitions with optional pagination
+      security:
+        - ApiKeyAuth: []
+          ApiSecretAuth: []
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of folders to return
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            example: 20
+        - name: offset
+          in: query
+          description: Number of folders to skip for pagination
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            example: 0
+      responses:
+        "200":
+          description: List of Folders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Folder"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /folder/{folderId}:
+    get:
+      summary: Get a specific folder
+      description: Retrieve details of a specific folder definition by ID
+      security:
+        - ApiKeyAuth: []
+          ApiSecretAuth: []
+      parameters:
+        - name: folderId
+          in: path
+          required: true
+          description: The ID of the folder
+          schema:
+            type: string
+            example: "cmbjp2vva000u0j01vtfu5kdj"
+      responses:
+        "200":
+          description: Folder details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Folder"
+        "404":
+          description: Folder not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
