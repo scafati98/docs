@@ -8,9 +8,15 @@
   },
   "favicon": "/logo-hd-dark.svg",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373"
+    "primary": "#4f46e5",
+    "light": "#4f46e5",
+    "dark": "#4f46e5"
+  },
+  "background": {
+    "decoration": "gradient",
+    "color": {
+      "dark": "#1b1b1b"
+    }
   },
   "topbarLinks": [
     {
@@ -36,10 +42,7 @@
         "groups": [
           {
             "group": "Introduction",
-            "pages": [
-              "introduction",
-              "getting_started"
-            ]
+            "pages": ["introduction", "getting_started"]
           },
           {
             "group": "Creating Tests",
@@ -52,11 +55,7 @@
           },
           {
             "group": "Running Tests",
-            "pages": [
-              "running_tests",
-              "cicd_integration",
-              "slack-integration"
-            ]
+            "pages": ["running_tests", "cicd_integration", "slack-integration"]
           }
         ]
       },
