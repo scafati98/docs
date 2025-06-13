@@ -1,0 +1,23 @@
+.tryit-button,
+[data-testid="tryit-button"],
+.api-playground button[type="submit"],
+.api-playground .submit-button {
+  background-color: #4f46e5 !important;
+  border-color: #c8a2c8 !important;
+  color: #ffffff !important;
+}
+
+.tryit-button:hover,
+[data-testid="tryit-button"]:hover,
+.api-playground button[type="submit"]:hover,
+.api-playground .submit-button:hover {
+  background-color: #4f46e5 !important;
+  border-color: #b19cb1 !important;
+}
+
+.tryit-button:focus,
+[data-testid="tryit-button"]:focus,
+.api-playground button[type="submit"]:focus,
+.api-playground .submit-button:focus {
+  box-shadow: 0 0 0 3px rgba(200, 162, 200, 0.3) !important;
+}
