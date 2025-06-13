@@ -15,7 +15,7 @@
   "background": {
     "decoration": "gradient",
     "color": {
-      "dark": "#1b1b1b"
+      "dark": "#0d0d0d"
     }
   },
   "topbarLinks": [
@@ -28,14 +28,21 @@
     "name": "Dashboard",
     "url": "https://autonoma.app"
   },
-  "anchors": [
-    {
-      "name": "Feature Requests",
-      "icon": "newspaper",
-      "url": "https://autonoma.bettermode.io/"
-    }
-  ],
   "navigation": {
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Website",
+          "icon": "globe",
+          "href": "https://autonoma.app/"
+        },
+        {
+          "anchor": "Feature Requests",
+          "icon": "pencil",
+          "href": "https://autonoma.bettermode.io/"
+        }
+      ]
+    },
     "tabs": [
       {
         "tab": "Get Started",
@@ -73,7 +80,20 @@
       }
     ]
   },
-  "footerSocials": {
-    "linkedin": "https://www.linkedin.com/company/autonoma-ai/"
+  "footer": {
+    "socials": {
+      "linkedin": "https://www.linkedin.com/company/autonoma-ai/"
+    },
+    "links": [
+      {
+        "header": "Product",
+        "items": [
+          {
+            "label": "Autonoma",
+            "href": "https://autonoma.app/"
+          }
+        ]
+      }
+    ]
   }
 }
