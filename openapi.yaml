@@ -26,6 +26,42 @@ components:
       name: autonoma-client-secret
       description: Client secret for authentication
   schemas:
+    RunTestRequest:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: The ID of the test to run
+          example: "cm8d9gt6v000c9fe5glmyi33u"
+        application_version_id:
+          type: string
+          description: Optional application version ID to use for the test run
+          example: "cm7dbowr80042waka7thyjhkq"
+        source:
+          type: string
+          description: Source of the test run request
+          default: "api"
+          example: "api"
+    RunFolderRequest:
+      type: object
+      required:
+        - folder_id
+      properties:
+        folder_id:
+          type: string
+          description: The ID of the folder containing tests to run
+          example: "cm7t223mk00154mzy2jwk2pqy"
+        application_version_id:
+          type: string
+          description: Optional application version ID to use for all tests in the folder
+          example: "cm7dbowr80042waka7thyjhkq"
+        source:
+          type: string
+          description: Source of the test run request
+          default: "api"
+          example: "api"
     TestFolder:
       type: object
       properties:
@@ -107,11 +143,11 @@ components:
       properties:
         message:
           type: string
-          example: "Folder with id cm9r0nog10012v301qtollv01 was scheduled to run. Since no applicationVersionID was provided, the latest version ('STG') for the application associated with the folder's tests was used."
+          example: "Test created successfully"
         url:
           type: string
           example: "https://autonoma.app/run/pby4qnbppbvimimuls4v5ajq"
-        runID:
+        run_id:
           type: string
           example: pby4qnbppbvimimuls4v5ajq
     RunFolder:
@@ -119,11 +155,11 @@ components:
       properties:
         message:
           type: string
-          example: "Test created successfully"
+          example: "Folder with id cm9r0nog10012v301qtollv01 was scheduled to run. Since no applicationVersionID was provided, the latest version ('STG') for the application associated with the folder's tests was used."
         url:
           type: string
-          example: "https://autonoma.app/run/pby4qnbppbvimimuls4v5ajq"
-        folderRunID:
+          example: "https://autonoma.app/run/folder/pby4qnbppbvimimuls4v5ajq"
+        folder_run_id:
           type: string
           example: pby4qnbppbvimimuls4v5ajq
     TestRun:
@@ -231,7 +267,43 @@ components:
         name:
           type: string
           example: "New Test 2025-06-11T21:25:47.442Z"
-    Error:
+    RunStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "running"
+        url:
+          type: string
+          example: "https://autonoma.app/run/cmbjp2vva000u0j01vtfu5kdj"
+    FolderRunStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "running"
+        url:
+          type: string
+          example: "New Test 2025-06-11T21:25:47.442Z"
+    BadRequestError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Bad Request"
+        message:
+          type: string
+          example: "No applicationVersionID provided, and could not automatically determine an application from the tests within folder cmbsgljfr00fd060153r9x8ek. Please specify an applicationVersionID or ensure at least one test has an associated application."
+    InvalidCredentialsError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Unauthorized"
+        message:
+          type: string
+          example: "Invalid authentication credentials"
+    NotFoundError:
       type: object
       properties:
         error:
@@ -239,52 +311,78 @@ components:
           example: "Not found"
         message:
           type: string
-          example: "The requested resource was not found"
+          example: "Resource with id `cm8d9gt6v000c9fe5glmyi33u` not found"
 paths:
-  /run/test/{testId}:
+  /run/test:
     post:
-      summary: Run a test by test id
-      description: Run a test by test id
+      summary: Run a test by test ID
+      description: Run a test by test ID
       security:
         - ApiKeyAuth: []
           ApiSecretAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RunTestRequest"
       responses:
         "200":
           description: Run creation result
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/RunTest"
+                $ref: "#/components/schemas/RunTest"
         "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-  /run/folder/{folderId}:
+                $ref: "#/components/schemas/InvalidCredentialsError"
+        "404":
+          description: Test not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundError"
+  /run/folder:
     post:
-      summary: Run tests by folder id
-      description: Run tests by folder id
+      summary: Run tests by folder ID
+      description: Run tests by folder ID
       security:
         - ApiKeyAuth: []
           ApiSecretAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RunFolderRequest"
       responses:
         "200":
           description: Run creation result
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/RunFolder"
+                $ref: "#/components/schemas/RunFolder"
+        "400":
+          description: Bad request (e.g., missing application version)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestError"
         "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/InvalidCredentialsError"
+        "404":
+          description: Folder not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundError"
   /run:
     get:
       summary: List test runs
@@ -360,8 +458,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-  /run/{runId}:
+                $ref: "#/components/schemas/InvalidCredentialsError"
+  /run/{runID}:
     get:
       summary: Get a specific test run
       description: Retrieve details of a specific test run by ID
@@ -369,7 +467,7 @@ paths:
         - ApiKeyAuth: []
           ApiSecretAuth: []
       parameters:
-        - name: runId
+        - name: runID
           in: path
           required: true
           description: The ID of the test run
@@ -402,14 +500,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/NotFoundError"
         "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-  /run/{runId}/steps:
+                $ref: "#/components/schemas/InvalidCredentialsError"
+  /run/{runID}/steps:
     get:
       summary: Get steps for a test run
       description: Retrieve the steps of a specific test run
@@ -417,7 +515,7 @@ paths:
         - ApiKeyAuth: []
           ApiSecretAuth: []
       parameters:
-        - name: runId
+        - name: runID
           in: path
           required: true
           description: The ID of the test run
@@ -455,13 +553,81 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/NotFoundError"
         "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/InvalidCredentialsError"
+  /run/{runID}/status:
+    get:
+      summary: Get a specific run status
+      description: Retrieve just the run status
+      security:
+        - ApiKeyAuth: []
+          ApiSecretAuth: []
+      parameters:
+        - name: runID
+          in: path
+          required: true
+          description: The ID of the run
+          schema:
+            type: string
+            example: "cmbjp2vva000u0j01vtfu5kdj"
+      responses:
+        "200":
+          description: Run status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RunStatus"
+        "404":
+          description: Run not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundError"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidCredentialsError"
+  /run/folder/{folderRunID}/status:
+    get:
+      summary: Get a specific run folder status
+      description: Retrieve run folder status and run status linked to folder run
+      security:
+        - ApiKeyAuth: []
+          ApiSecretAuth: []
+      parameters:
+        - name: folderRunID
+          in: path
+          required: true
+          description: The ID of the run folder
+          schema:
+            type: string
+            example: "cmbjp2vva000u0j01vtfu5kdj"
+      responses:
+        "200":
+          description: Folder run status details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FolderRunStatus"
+        "404":
+          description: Folder run not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundError"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidCredentialsError"
   /test:
     get:
       summary: List tests
@@ -515,8 +681,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-  /test/{testId}:
+                $ref: "#/components/schemas/InvalidCredentialsError"
+  /test/{testID}:
     get:
       summary: Get a specific test
       description: Retrieve details of a specific test definition by ID
@@ -524,7 +690,7 @@ paths:
         - ApiKeyAuth: []
           ApiSecretAuth: []
       parameters:
-        - name: testId
+        - name: testID
           in: path
           required: true
           description: The ID of the test
@@ -545,18 +711,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Test"
-        "404":
-          description: Test not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
         "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/InvalidCredentialsError"
+        "404":
+          description: Test not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundError"
   /folder:
     get:
       summary: List Folders
@@ -596,8 +762,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-  /folder/{folderId}:
+                $ref: "#/components/schemas/InvalidCredentialsError"
+  /folder/{folderID}:
     get:
       summary: Get a specific folder
       description: Retrieve details of a specific folder definition by ID
@@ -605,7 +771,7 @@ paths:
         - ApiKeyAuth: []
           ApiSecretAuth: []
       parameters:
-        - name: folderId
+        - name: folderID
           in: path
           required: true
           description: The ID of the folder
@@ -624,10 +790,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/NotFoundError"
         "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/InvalidCredentialsError"

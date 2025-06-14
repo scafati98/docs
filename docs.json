@@ -8,9 +8,15 @@
   },
   "favicon": "/logo-hd-dark.svg",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373"
+    "primary": "#4f46e5",
+    "light": "#4f46e5",
+    "dark": "#4f46e5"
+  },
+  "background": {
+    "decoration": "gradient",
+    "color": {
+      "dark": "#1a1a1a"
+    }
   },
   "topbarLinks": [
     {
@@ -22,24 +28,38 @@
     "name": "Dashboard",
     "url": "https://autonoma.app"
   },
-  "anchors": [
-    {
-      "name": "Feature Requests",
-      "icon": "newspaper",
-      "url": "https://autonoma.bettermode.io/"
+  "fonts": {
+    "heading": {
+      "family": "Inter",
+      "weight": 500
+    },
+    "body": {
+      "family": "Inter",
+      "weight": 400
     }
-  ],
+  },
   "navigation": {
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Website",
+          "icon": "globe",
+          "href": "https://autonoma.app/"
+        },
+        {
+          "anchor": "Feature Requests",
+          "icon": "pencil",
+          "href": "https://autonoma.bettermode.io/"
+        }
+      ]
+    },
     "tabs": [
       {
         "tab": "Get Started",
         "groups": [
           {
             "group": "Introduction",
-            "pages": [
-              "introduction",
-              "getting_started"
-            ]
+            "pages": ["introduction", "getting_started"]
           },
           {
             "group": "Creating Tests",
@@ -52,11 +72,7 @@
           },
           {
             "group": "Running Tests",
-            "pages": [
-              "running_tests",
-              "cicd_integration",
-              "slack-integration"
-            ]
+            "pages": ["running_tests", "cicd_integration", "slack-integration"]
           }
         ]
       },
@@ -64,17 +80,58 @@
         "tab": "API Reference",
         "groups": [
           {
-            "group": "Endpoints",
-            "openapi": {
-              "source": "openapi.yaml",
-              "directory": "api-reference"
-            }
+            "group": "Using the API",
+            "pages": ["overview"]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              {
+                "group": "Test",
+                "pages": [
+                  "api-reference/list-tests",
+                  "api-reference/get-a-specific-test"
+                ]
+              },
+              {
+                "group": "Folder",
+                "pages": [
+                  "api-reference/list-folders",
+                  "api-reference/get-a-specific-folder"
+                ]
+              },
+              {
+                "group": "Run",
+                "pages": [
+                  "api-reference/run-a-test-by-test-id",
+                  "api-reference/run-tests-by-folder-id",
+                  "api-reference/list-test-runs",
+                  "api-reference/get-a-specific-test-run",
+                  "api-reference/get-steps-for-a-test-run",
+                  "api-reference/get-a-specific-run-status",
+                  "api-reference/get-a-specific-run-folder-status"
+                ]
+              }
+            ]
           }
         ]
       }
     ]
   },
-  "footerSocials": {
-    "linkedin": "https://www.linkedin.com/company/autonoma-ai/"
+  "footer": {
+    "socials": {
+      "linkedin": "https://www.linkedin.com/company/autonoma-ai/"
+    },
+    "links": [
+      {
+        "header": "Product",
+        "items": [
+          {
+            "label": "Autonoma",
+            "href": "https://autonoma.app/"
+          }
+        ]
+      }
+    ]
   }
 }
