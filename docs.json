@@ -28,6 +28,16 @@
     "name": "Dashboard",
     "url": "https://autonoma.app"
   },
+  "fonts": {
+    "heading": {
+      "family": "Inter",
+      "weight": 500
+    },
+    "body": {
+      "family": "Inter",
+      "weight": 400
+    }
+  },
   "navigation": {
     "global": {
       "anchors": [
@@ -70,11 +80,39 @@
         "tab": "API Reference",
         "groups": [
           {
-            "group": "Endpoints",
-            "openapi": {
-              "source": "openapi.yaml",
-              "directory": "api-reference"
-            }
+            "group": "Using the API",
+            "pages": ["overview"]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              {
+                "group": "Test",
+                "pages": [
+                  "api-reference/list-tests",
+                  "api-reference/get-a-specific-test"
+                ]
+              },
+              {
+                "group": "Folder",
+                "pages": [
+                  "api-reference/list-folders",
+                  "api-reference/get-a-specific-folder"
+                ]
+              },
+              {
+                "group": "Run",
+                "pages": [
+                  "api-reference/run-a-test-by-test-id",
+                  "api-reference/run-tests-by-folder-id",
+                  "api-reference/list-test-runs",
+                  "api-reference/get-a-specific-test-run",
+                  "api-reference/get-steps-for-a-test-run",
+                  "api-reference/get-a-specific-run-status",
+                  "api-reference/get-a-specific-run-folder-status"
+                ]
+              }
+            ]
           }
         ]
       }

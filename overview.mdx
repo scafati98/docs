@@ -1,0 +1,40 @@
+The Autonoma API allows you to programmatically manage and execute test runs within the Autonoma platform. You can run individual tests, execute entire test folders, retrieve test results, and monitor run statuses.
+
+## Authentication
+
+The Autonoma API uses API key authentication with two required headers:
+
+- `autonoma-client-id`: Your client ID
+- `autonoma-client-secret`: Your client secret
+
+You'll need to include both headers in every API request. To obtain your API credentials:
+
+1. Log into your Autonoma dashboard
+2. Navigate to your account settings or API section
+3. Generate or retrieve your client ID and secret
+4. Store these credentials securely in your application
+
+Example authentication headers:
+```http
+autonoma-client-id: your-client-id-here
+autonoma-client-secret: your-client-secret-here
+```
+
+## Important: Media URL Expiration
+
+**All media URLs returned by the API (including screenshots, videos, and other media assets) expire after 1 hour.** This is a critical limitation to be aware of when integrating with the Autonoma API.
+
+### Recommendations:
+- **Do not store or cache media URLs** for longer than 1 hour
+- **Download and save media files immediately** if you need to retain them
+- **Refresh media URLs** by making new API calls when needed
+- **Implement proper error handling** for expired URL scenarios
+
+If you need to preserve media content beyond the 1-hour expiration window, download the files from the provided URLs and store them in your own storage solution immediately after receiving the API response.
+
+## Base URL
+
+All API endpoints are relative to:
+```
+https://autonoma.app/api
+```
